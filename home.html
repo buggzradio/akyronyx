@@ -73,7 +73,7 @@
 <body>
   <h1>Akyronyx</h1>
   <div class="grid" id="gameGrid">Loading games...</div>
-  <footer>© 2025 Akyronyx. Stay unblocked 🔓</footer>
+  <footer>© 2025 Akyronyx. Made by Buggz 🔓</footer>
 
   <script>
     // Block unauthorized access
@@ -83,6 +83,7 @@
 
     async function loadGames() {
       try {
+        // Load the games data from index.json
         const res = await fetch('https://buggzradio.github.io/kyro-games/index.json');
         const games = await res.json();
         const grid = document.getElementById('gameGrid');
@@ -100,16 +101,20 @@
         });
       } catch (err) {
         document.getElementById('gameGrid').innerHTML = 'Failed to load games.';
-        console.error('Error loading games.json:', err);
+        console.error('Error loading index.json:', err);
       }
     }
 
     function openGame(url) {
-      const win = window.open('about:blank');
-      win.location.href = url;
-    }
+  const win = window.open('about:blank'); // Open a new blank window
+  win.document.write(`
+    <iframe src="${url}" style="border:none;width:100%;height:100vh;"></iframe>
+  `); // Embed game URL in an iframe inside about:blank
+  win.document.close(); // Close the document stream to render the page
+}
 
-    loadGames();
+
+    loadGames(); // Call the loadGames function to load game data on page load
   </script>
 </body>
 </html>

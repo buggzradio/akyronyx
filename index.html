@@ -69,15 +69,8 @@
       const pass = document.getElementById('pw').value;
 
       if (USERS[user] && USERS[user] === pass) {
-        const win = window.open("about:blank");
-        const page = `
-          <script>
-            localStorage.setItem('unblockedGamesAuth', 'true');
-            location.replace('home.html');
-          <\/script>
-        `;
-        win.document.write(page);
-        win.document.close();
+        localStorage.setItem('unblockedGamesAuth', 'true'); // Set auth flag
+        window.location.href = 'home.html'; // Redirect to home.html after success
       } else {
         alert("Incorrect username or password.");
       }
