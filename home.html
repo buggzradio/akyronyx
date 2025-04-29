@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Akyronyx - Games</title>
+  <title>Classes</title> <!-- Cloaked title -->
+  <link rel="icon" href="https://ssl.gstatic.com/classroom/ic_product_classroom_96.png" />
   <style>
     :root {
       --bg: #0f0f0f;
@@ -63,6 +64,18 @@
       cursor: pointer;
       font-weight: bold;
     }
+    .logout-btn {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      background: #d32f2f;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
     footer {
       margin-top: 3rem;
       font-size: 0.9rem;
@@ -71,19 +84,19 @@
   </style>
 </head>
 <body>
+  <button class="logout-btn" onclick="logout()">Logout</button>
   <h1>Akyronyx</h1>
   <div class="grid" id="gameGrid">Loading games...</div>
   <footer>© 2025 Akyronyx. Made by Buggz 🔓</footer>
 
   <script>
-    // Block unauthorized access
+    // Enforce password protection
     if (localStorage.getItem('unblockedGamesAuth') !== 'true') {
       window.location.href = 'index.html';
     }
 
     async function loadGames() {
       try {
-        // Load the games data from index.json
         const res = await fetch('https://buggzradio.github.io/kyro-games/index.json');
         const games = await res.json();
         const grid = document.getElementById('gameGrid');
@@ -101,20 +114,20 @@
         });
       } catch (err) {
         document.getElementById('gameGrid').innerHTML = 'Failed to load games.';
-        console.error('Error loading index.json:', err);
+        console.error('Error loading games:', err);
       }
     }
 
     function openGame(url) {
-  const win = window.open('about:blank'); // Open a new blank window
-  win.document.write(`
-    <iframe src="${url}" style="border:none;width:100%;height:100vh;"></iframe>
-  `); // Embed game URL in an iframe inside about:blank
-  win.document.close(); // Close the document stream to render the page
-}
+      window.open(url, '_blank'); // no about:blank
+    }
 
+    function logout() {
+      localStorage.removeItem('unblockedGamesAuth');
+      location.href = 'index.html';
+    }
 
-    loadGames(); // Call the loadGames function to load game data on page load
+    loadGames();
   </script>
 </body>
 </html>
