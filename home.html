@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Akyronyx - Games</title>
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --fg: #f0f0f0;
+      --accent: #00bcd4;
+      --card: #1a1a1a;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      max-width: 1000px;
+    }
+    .game {
+      background: var(--card);
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .game:hover {
+      transform: scale(1.05);
+      background: #222;
+    }
+    .game img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .game h3 {
+      margin: 0.5rem 0 0.3rem;
+    }
+    .game button {
+      background: var(--accent);
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>Akyronyx</h1>
+  <div class="grid" id="gameGrid">Loading games...</div>
+  <footer>© 2025 Akyronyx. Stay unblocked 🔓</footer>
+
+  <script>
+    // Block unauthorized access
+    if (localStorage.getItem('unblockedGamesAuth') !== 'true') {
+      window.location.href = 'index.html';
+    }
+
+    async function loadGames() {
+      try {
+        const res = await fetch('https://buggzradio.github.io/kyro-games/index.json');
+        const games = await res.json();
+        const grid = document.getElementById('gameGrid');
+        grid.innerHTML = '';
+
+        games.forEach(game => {
+          const el = document.createElement('div');
+          el.className = 'game';
+          el.innerHTML = `
+            <img src="${game.image}" alt="${game.name}">
+            <h3>${game.name}</h3>
+            <button onclick="openGame('${game.path}')">Play</button>
+          `;
+          grid.appendChild(el);
+        });
+      } catch (err) {
+        document.getElementById('gameGrid').innerHTML = 'Failed to load games.';
+        console.error('Error loading games.json:', err);
+      }
+    }
+
+    function openGame(url) {
+      const win = window.open('about:blank');
+      win.location.href = url;
+    }
+
+    loadGames();
+  </script>
+</body>
+</html>

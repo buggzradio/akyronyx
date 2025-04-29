@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Akyronyx Access</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .box {
+      background: #1a1a1a;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00bcd4;
+      text-align: center;
+      width: 90%;
+      max-width: 300px;
+    }
+    input {
+      padding: 0.6rem;
+      border: none;
+      border-radius: 8px;
+      margin-top: 1rem;
+      width: 100%;
+      background: #2a2a2a;
+      color: white;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      background: #00bcd4;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #019aae;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>🔒 Akyronyx Login</h2>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="pw" placeholder="Password" />
+    <button onclick="unlock()">Unlock</button>
+  </div>
+
+  <script>
+    // 🔐 Replace or add user/password pairs here
+    const USERS = {
+      "admin": "unblockme",
+      "student1": "1234",
+      "player2": "secretpass"
+    };
+
+    function unlock() {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('pw').value;
+
+      if (USERS[user] && USERS[user] === pass) {
+        const win = window.open("about:blank");
+        const page = `
+          <script>
+            localStorage.setItem('unblockedGamesAuth', 'true');
+            location.replace('home.html');
+          <\/script>
+        `;
+        win.document.write(page);
+        win.document.close();
+      } else {
+        alert("Incorrect username or password.");
+      }
+    }
+  </script>
+</body>
+</html>
