@@ -96,27 +96,33 @@
     }
 
     async function loadGames() {
-      try {
-        const res = await fetch('https://buggzradio.github.io/kyro-games/index.json');
-        const games = await res.json();
-        const grid = document.getElementById('gameGrid');
-        grid.innerHTML = '';
+  try {
+    const res = await fetch('https://buggzradio.github.io/kyro-games/index.json');
+    const games = await res.json();
+    const grid = document.getElementById('gameGrid');
+    grid.innerHTML = ''; // Clear the existing content
 
-        games.forEach(game => {
-          const el = document.createElement('div');
-          el.className = 'game';
-          el.innerHTML = `
-            <img src="${game.image}" alt="${game.name}">
-            <h3>${game.name}</h3>
-            <button onclick="openGame('${game.path}')">Play</button>
-          `;
-          grid.appendChild(el);
-        });
-      } catch (err) {
-        document.getElementById('gameGrid').innerHTML = 'Failed to load games.';
-        console.error('Error loading games:', err);
-      }
-    }
+    games.forEach(game => {
+      const el = document.createElement('div');
+      el.className = 'game';
+      el.innerHTML = `
+        <img src="${game.image}" alt="${game.name}">
+        <h3>${game.name}</h3>
+        <button onclick="openGame('${game.path}')">Play</button>
+      `;
+      grid.appendChild(el);
+    });
+  } catch (err) {
+    document.getElementById('gameGrid').innerHTML = 'Failed to load games.';
+    console.error('Error loading games:', err);
+  }
+}
+
+// Ensure the function runs on every page load
+document.addEventListener('DOMContentLoaded', () => {
+  loadGames(); // Call the loadGames function after the page is fully loaded
+});
+
 
     function openGame(url) {
       window.open(url, '_blank'); // no about:blank
